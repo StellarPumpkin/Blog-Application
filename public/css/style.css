@@ -1,0 +1,31 @@
+#profile {
+    text-align: center;
+    font-size: 50px;
+    padding: 150px;
+  }
+  #profileBox{
+    padding: 150px;
+  }
+  #postTitle{
+
+    text-align: center; 
+  }
+  #postBody{
+    padding: 150px;
+    text-align: center;
+    font-size: 28px;
+    color: #848494;
+    letter-spacing: 3px;
+    
+  }
+  #myposts{
+    text-align: center;
+    
+  }
+
+  #nobulletpoints{
+    list-style-type: none;
+  }
+
+
+  

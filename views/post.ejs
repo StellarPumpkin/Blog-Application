@@ -1,0 +1,35 @@
+<% include ./partials/header%>
+<% include ./partials/onlinenavbar%>
+<form action="/post/<%=postId%>">
+<div id="profileBox">
+    <h1 id="postTitle"> 
+        //<kbd><%=title%></kbd>//
+    </h1>
+    <p id="postBody"> 
+        <%=body%>
+    </p>
+</div>
+</form>
+<div class="container">
+  <h4>Leave your comment <kbd>here</kbd>:</h4>
+<form action="/post/<%=postId%>/comments" method="post">
+    <div class="form-group">
+        <label for="comment">Username:</label><br>
+        <input type="text" name="username">
+    </div>
+    <div class="form-group">
+        <label for="comment">Comment:</label>
+        <textarea class="form-control" rows="4" id="comment" name="message"></textarea>
+        <button type="submit" class="btn btn-primary">Comment!</button>
+    </div>
+</form>
+<h4>Comments:</h4>
+<% allComments.forEach((post) => { %>
+<h5>
+   <kbd> <%=post.username%></kbd>
+</h5>
+<h5> Said: </h5>
+    <%=post.message%>
+
+<% }) %>
+<% include ./partials/footer%>

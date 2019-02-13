@@ -1,0 +1,19 @@
+<% include ./partials/header%>
+<% include ./partials/onlinenavbar%>
+<div id="myposts">
+<ul id="nobulletpoints">
+            <% myPosts.forEach((post) => { %>
+            <li id="listpoints">
+            <a href="/post/<%=post.id%>"> <%= post.title %> </a>
+            </li>
+                
+            
+
+            <%})%>
+        </ul>
+        </div>
+
+
+
+
+<% include ./partials/footer%>
