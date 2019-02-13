@@ -2,7 +2,7 @@ const Sequelize = require ('sequelize');
 const Posts = require('./posts.js')
 
 //sequelize connection with database
- const connection = new Sequelize('blog', 'Elena', 'BardYlvisaker', {
+ const connection = new Sequelize('blog', process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD, {
 host:  'localhost',
 dialect: 'postgres',
 operatorsAliases: false
