@@ -2,6 +2,7 @@ const express = require('express'),
     port = process.env.PORT || 3000,
     path = require('path'),
     app = express(),
+    bcrypt = require('bcrypt'),
     cookieParser = require('cookie-parser'),
     Users = require('./models/users.js'),
     Comments = require('./models/comments'),
@@ -49,11 +50,12 @@ app.route('/register')
         res.render('register')
     })
     .post((req, res) => {
+        let passwordInput = req.body.password;
+        bcrypt.hash(passwordInput, 8).then((hashedPassword) => {
         Users.create({
                 username: req.body.username,
                 email: req.body.email,
-                password: req.body.password,
-                //password: req.body.password
+                password: hashedPassword
             }).then((retrivedUser) => {
                 req.session.Users = retrivedUser.dataValues;
                 res.redirect('/profile');
@@ -62,6 +64,7 @@ app.route('/register')
                 console.log(`Something went wrong: ${error.stack}`);
                 res.redirect('/register');
             });
+        })
     });
 
 
