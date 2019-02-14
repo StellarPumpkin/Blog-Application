@@ -76,25 +76,31 @@ app.route('/login')
     })
     .post((req, res) => {
         let username = req.body.username,
-            password = req.body.password;
+        passwordInput = req.body.password;
         console.log(`login username: ${username}`);
-        console.log(`password username: ${password}`);
+        console.log(`password username: ${passwordInput}`);
 
         Users.findOne({
                 where: {
                     username: username,
-                    password: password
                 }
             })
             .then((retrivedUser) => {
+                bcrypt.compare(passwordInput, retrivedUser.dataValues.password).then((result) => {
+                    if (username !== null && result) {      
                 req.session.Users = retrivedUser.dataValues;
                 res.redirect('/profile');
-            })
-            .catch((error) => {
+                    }else {
+                        res.redirect('/login');
+                    }
+            }).catch((error) => {
                 console.log(`Something went wrong: ${error.stack}`);
-                res.render('error');
-            })
+            });
+    }).catch((error) => {
+        console.log(`Something went wrong when logging in: ${error.stack}`);
+        res.redirect('/login');
     });
+});
 
 
 
