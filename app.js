@@ -3,6 +3,7 @@ const express = require('express'),
     path = require('path'),
     app = express(),
     bcrypt = require('bcrypt'),
+    { check, validationResult } = require('express-validator/check');
     cookieParser = require('cookie-parser'),
     Users = require('./models/users.js'),
     Comments = require('./models/comments'),
@@ -49,7 +50,35 @@ app.route('/register')
     .get(checkLoggedIn, (req, res) => {
         res.render('register')
     })
-    .post((req, res) => {
+    .post(
+        [
+        check('username').custom((value, { req }) => {
+            return Users.findOne({
+                where: {
+                    username: req.body.username
+                }
+            }).then(user => {
+                if (user) {
+                    return Promise.reject('Username already in use');
+                }
+            })  
+        }),
+        check('username').exists({checkFalsy:true}),
+        check('password').exists({checkFalsy:true}).withMessage('Can not be empty'),
+    
+        check('password').isLength({ min: 8 }).withMessage('must be at least 8 characters long'),
+        check('passwordConfirmation', 'Password confirmation field must have the same value as the password field')
+        .exists()
+        .custom((value, { req }) => value === req.body.password)
+        ],  (req, res) => {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return res.render('register', {
+                errors: errors.array()
+            });
+        }
+
         let passwordInput = req.body.password;
         bcrypt.hash(passwordInput, 8).then((hashedPassword) => {
         Users.create({
